@@ -1,0 +1,553 @@
+{
+	"info": {
+		"_postman_id": "5386a00a-5e81-454c-9eaf-0dc17a8a8584",
+		"name": "Users",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21750523"
+	},
+	"item": [
+		{
+			"name": "Login - Admin Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.environment.set(\"token\", JSON.parse(responseBody).token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"mail\": \"sysadmin@qacoders.com\",\r\n  \"password\": \"1234@Test\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/login",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/status",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"status"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const firstName = pm.variables.replaceIn('{{$randomFirstName}}');\r",
+							"const LastName = pm.variables.replaceIn('{{$randomLastName}}');\r",
+							"const RandomNumber = pm.variables.replaceIn('{{$timestamp}}');\r",
+							"\r",
+							"pm.environment.set(\"UserEmail\", firstName+'_'+LastName+RandomNumber+'@qacoders.com.br');\r",
+							"\r",
+							"// o timestamp gera 10 números e concateno com mais um, pra atender o requisito de 11 dígitos\r",
+							"pm.environment.set(\"UserCPF\", RandomNumber + 9);\r",
+							"\r",
+							"// gera uma senha aleatória e concateno com um caractere especial para atender ao requisito\r",
+							"//pm.environment.set(\"UserPassword\", pm.variables.replaceIn('{{$randomPassword}}'+'#'));\r",
+							"\r",
+							"pm.environment.set(\"FullName\", firstName + ' ' + LastName);\r",
+							"\r",
+							"pm.environment.set(\"UserPassword\", gerarSenha());\r",
+							"\r",
+							"function gerarSenha() {\r",
+							"  const caracteresMaiusculos = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';\r",
+							"  const caracteresMinusculos = 'abcdefghijklmnopqrstuvwxyz';\r",
+							"  const numeros = '0123456789';\r",
+							"  const caracteresEspeciais = '@#$%';\r",
+							"\r",
+							"  const todosCaracteres = caracteresMaiusculos + caracteresMinusculos + numeros + caracteresEspeciais;\r",
+							"\r",
+							"  function getRandomCharacter(string) {\r",
+							"    const randomIndex = Math.floor(Math.random() * string.length);\r",
+							"    return string.charAt(randomIndex);\r",
+							"  }\r",
+							"\r",
+							"  function shuffleString(string) {\r",
+							"    const array = string.split('');\r",
+							"    for (let i = array.length - 1; i > 0; i--) {\r",
+							"      const j = Math.floor(Math.random() * (i + 1));\r",
+							"      [array[i], array[j]] = [array[j], array[i]];\r",
+							"    }\r",
+							"    return array.join('');\r",
+							"  }\r",
+							"\r",
+							"  let senha = '';\r",
+							"  senha += getRandomCharacter(caracteresMaiusculos);\r",
+							"  senha += getRandomCharacter(caracteresMinusculos);\r",
+							"  senha += getRandomCharacter(numeros);\r",
+							"  senha += getRandomCharacter(caracteresEspeciais);\r",
+							"\r",
+							"  for (let i = 4; i < 8; i++) {\r",
+							"    senha += getRandomCharacter(todosCaracteres);\r",
+							"  }\r",
+							"\r",
+							"  senha = shuffleString(senha);\r",
+							"  return senha;\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"// Checar a documentação\r",
+							"pm.test(\"Valida a mensagem\", function () {\r",
+							"    const mensagem = `Olá ${pm.environment.get(\"FullName\")} cadastro realizado com sucesso.`\r",
+							"    pm.expect(JSON.parse(responseBody).msg).to.equal(mensagem);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Valida o fullName\", function () {\r",
+							"    pm.expect(JSON.parse(responseBody).user.fullName).to.equal(pm.environment.get(\"FullName\"));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Valida o email\", function () {\r",
+							"    pm.expect(JSON.parse(responseBody).user.mail).to.equal(pm.environment.get(\"UserEmail\"));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Valida o cpf\", function () {\r",
+							"    pm.expect(JSON.parse(responseBody).user.cpf).to.equal(pm.environment.get(\"UserCPF\"));\r",
+							"});\r",
+							"\r",
+							"pm.environment.set(\"_Id\", JSON.parse(responseBody).user._id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"fullName\": \"{{FullName}}\",\r\n  \"mail\": \"{{UserEmail}}\",\r\n  \"password\": \"{{UserPassword}}\",\r\n  \"confirmPassword\": \"{{UserPassword}}\",\r\n  \"accessProfile\": \"ADMIN\",\r\n  \"cpf\": \"{{UserCPF}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/user/register",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"user",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Valida a mensagem de sucesso\", function () {\r",
+							"    const mensagem = `Olá ${pm.environment.get(\"FullName\")}, autenticação autorizada com sucesso!`\r",
+							"    pm.expect(JSON.parse(responseBody).msg).to.equal(mensagem);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Valida se criou o token\", function () {\r",
+							"    pm.expect(JSON.parse(responseBody)).to.have.property(\"token\");\r",
+							"    pm.environment.set(\"tokenUser\", JSON.parse(responseBody).token);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"mail\": \"{{UserEmail}}\",\r\n    \"password\": \"{{UserPassword}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/login",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Valida ordem alfabética dos resultados\", function () {\r",
+							"    const array = JSON.parse(responseBody);\r",
+							"    function isArraySortedByFullName(arr) {\r",
+							"        for (let i = 1; i < arr.length; i++) {\r",
+							"            if (arr[i - 1].fullName > arr[i].fullName) {\r",
+							"                return false;\r",
+							"            }\r",
+							"        }\r",
+							"    return true;\r",
+							"    }\r",
+							"    pm.expect(isArraySortedByFullName(array)).to.be.true;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{tokenUser}}",
+							"type": "string"
+						},
+						{
+							"key": "in",
+							"value": "query",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "token",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/user/",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"user",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User With Limit",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Valida limite igual 50\", function () {\r",
+							"    const array = JSON.parse(responseBody).length;\r",
+							"    pm.expect(array).to.equal(50);\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{tokenUser}}",
+							"type": "string"
+						},
+						{
+							"key": "in",
+							"value": "query",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "token",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/user/?page=1&limit=50",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"user",
+						""
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "limit",
+							"value": "50"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Count",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Value of 'count' is an number\", function () {\r",
+							"    pm.expect(JSON.parse(responseBody).count % 1).to.equal(0);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{tokenUser}}",
+							"type": "string"
+						},
+						{
+							"key": "in",
+							"value": "query",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "token",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/user/count",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"user",
+						"count"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Password",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"UserPassword\", gerarSenha());\r",
+							"\r",
+							"function gerarSenha() {\r",
+							"  const caracteresMaiusculos = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';\r",
+							"  const caracteresMinusculos = 'abcdefghijklmnopqrstuvwxyz';\r",
+							"  const numeros = '0123456789';\r",
+							"  const caracteresEspeciais = '@#$%';\r",
+							"\r",
+							"  const todosCaracteres = caracteresMaiusculos + caracteresMinusculos + numeros + caracteresEspeciais;\r",
+							"\r",
+							"  function getRandomCharacter(string) {\r",
+							"    const randomIndex = Math.floor(Math.random() * string.length);\r",
+							"    return string.charAt(randomIndex);\r",
+							"  }\r",
+							"\r",
+							"  let senha = '';\r",
+							"  senha += getRandomCharacter(caracteresMaiusculos);\r",
+							"  senha += getRandomCharacter(caracteresMinusculos);\r",
+							"  senha += getRandomCharacter(numeros);\r",
+							"  senha += getRandomCharacter(caracteresEspeciais);\r",
+							"\r",
+							"  for (let i = 4; i < 8; i++) {\r",
+							"    senha += getRandomCharacter(todosCaracteres);\r",
+							"  }\r",
+							"\r",
+							"  return senha;\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{tokenUser}}",
+							"type": "string"
+						},
+						{
+							"key": "in",
+							"value": "query",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "token",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"password\": \"{{UserPassword}}\",\r\n  \"confirmPassword\": \"{{UserPassword}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/user/service/password/{{_Id}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"user",
+						"service",
+						"password",
+						"{{_Id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

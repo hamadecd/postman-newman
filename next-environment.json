@@ -1,0 +1,63 @@
+{
+	"id": "45cd9030-2452-42b1-bc73-1d427a16258a",
+	"name": "next-qacoders",
+	"values": [
+		{
+			"key": "token",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTMzMGU3ZjBlMTZiYmU3M2VkMWUxYzEiLCJmdWxsTmFtZSI6IlFhLUNvZGVycy1TWVNBRE1JTiIsIm1haWwiOiJzeXNhZG1pbkBxYWNvZGVycy5jb20iLCJwYXNzd29yZCI6IiQyYiQxMCRZWWpPM1d3ZlgwOHROMHJTWkQ1UVVlWW0wb2h1cGJCTkdzZnFUc3hnUHdIalMyYnFvcGR1eSIsImFjY2Vzc1Byb2ZpbGUiOiJTWVNBRE1JTiIsImNwZiI6IjExMTExMTExMTExIiwic3RhdHVzIjp0cnVlLCJhdWRpdCI6W3sicmVnaXN0ZXJlZEJ5Ijp7InVzZXJJZCI6IjExMTExMTExMTExMTExMTExMSIsInVzZXJMb2dpbiI6InN5c2FkbWluQHFhY29kZXJzLmNvbSJ9LCJyZWdpc3RyYXRpb25EYXRlIjoic2V4dGEtZmVpcmEsIDIwLzEwLzIwMjMsIDIwOjM0OjIzIEJSVCIsInJlZ2lzdHJhdGlvbk51bWJlciI6IjAxIiwiY29tcGFueUlkIjoiUWEuQ29kZXJzIiwiX2lkIjoiNjUzMzBlN2YwZTE2YmJlNzNlZDFlMWMyIn1dLCJfX3YiOjAsImlhdCI6MTY5OTMyMjY0NiwiZXhwIjoxNjk5NDA5MDQ2fQ.yXJTmG46odlA5fw-9AiCahmVGEWwPV4h7tsJhneQpx4",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "UserEmail",
+			"value": "Conor_Beer1699325169@qacoders.com.br",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "UserCPF",
+			"value": "16993251699",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "tokenUser",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTQ5YTUxMDBlMTZiYmU3M2VkMjBmNmQiLCJmdWxsTmFtZSI6IkNvbm9yIEJlZXIiLCJtYWlsIjoiQ29ub3JfQmVlcjE2OTkzMjUxNjlAcWFjb2RlcnMuY29tLmJyIiwicGFzc3dvcmQiOiIkMmIkMTAkUjZxYS9JVmVLdzdpaXBmci5mNmgudVRJM01pYUcvSjAzeVZoZC55YUkzdzl4SWEzc2FXMnUiLCJhY2Nlc3NQcm9maWxlIjoiQURNSU4iLCJjcGYiOiIxNjk5MzI1MTY5OSIsInN0YXR1cyI6dHJ1ZSwiYXVkaXQiOlt7InJlZ2lzdGVyZWRCeSI6eyJ1c2VySWQiOiI2NTMzMGU3ZjBlMTZiYmU3M2VkMWUxYzEiLCJ1c2VyTG9naW4iOiJzeXNhZG1pbkBxYWNvZGVycy5jb20ifSwicmVnaXN0cmF0aW9uRGF0ZSI6InNlZ3VuZGEtZmVpcmEsIDA2LzExLzIwMjMsIDIzOjQ2OjQwIEJSVCIsInJlZ2lzdHJhdGlvbk51bWJlciI6IlFhQ29kZXJzLTEzNyIsIl9pZCI6IjY1NDlhNTEwMGUxNmJiZTczZWQyMGY2ZSJ9XSwiX192IjowLCJpYXQiOjE2OTkzMjUyMDMsImV4cCI6MTY5OTQxMTYwM30.LYS8qD3Mjx076xid6qqPZxAvLCSmQTRWr4ZyokjEBK4",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "UserId",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "url",
+			"value": "https://next.qacoders-academy.com.br",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "UserPassword",
+			"value": "AIEka$x0",
+			"type": "secret",
+			"enabled": true
+		},
+		{
+			"key": "FullName",
+			"value": "Conor Beer",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "_Id",
+			"value": "6549a5100e16bbe73ed20f6d",
+			"type": "any",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2023-11-15T12:08:56.947Z",
+	"_postman_exported_using": "Postman/10.20.0"
+}
